@@ -32,6 +32,45 @@
 .donutWrap>.donutLegend{grid-column:2;grid-row:2;min-width:0;width:100%}
 .donutWrap>.empty{grid-column:1/-1}
 @media(max-width:560px){.donutWrap{grid-template-columns:minmax(130px,165px) minmax(0,1fr);gap:10px}.donutWrap>.donut{width:145px;height:145px}.donut:after{inset:32px}}
+
+/* Mobile layout refinement for Kakebo PWA */
+@media(max-width:720px){
+  html,body{width:100%;max-width:100%;overflow-x:hidden}
+  .layout{width:100%;min-width:0}
+  .side{width:100%;max-width:100%;padding-left:10px;padding-right:10px}
+  .brand{padding:4px 6px;white-space:normal}
+  .nav{width:100%;max-width:100%;padding-bottom:3px;gap:5px;overscroll-behavior-x:contain}
+  .nav button{font-size:13px;padding:9px 10px}
+  .main{width:100%;max-width:100%;min-width:0;padding:12px}
+  .view,.card,.grid,.top,.sectionhead{min-width:0;max-width:100%}
+  .card{padding:14px;border-radius:13px}
+  .grid{gap:12px}
+  .stats{gap:10px}
+  .top{flex-wrap:wrap;gap:10px;margin-bottom:15px}
+  .topright{flex-direction:row;flex-wrap:wrap;width:100%}
+  .topright button{flex:1 1 auto}
+  h1,h2,h3,p,.sub{overflow-wrap:anywhere}
+  input,select,textarea{max-width:100%;min-width:0}
+  button{min-height:42px;white-space:normal}
+  .responsive{overflow-x:auto!important;overflow-y:hidden!important;max-width:100%;-webkit-overflow-scrolling:touch}
+  .responsive table{min-width:520px}
+  #chargesShare .responsive table{min-width:430px}
+  #chargesShare .responsive input{width:100%;min-width:90px}
+  #chargesShare .grid.two{grid-template-columns:minmax(0,1fr)}
+  #chargesShare #shareBalanceResult{font-size:15px!important;line-height:1.5;overflow-wrap:anywhere}
+  #debtList{grid-template-columns:minmax(0,1fr)}
+  .barrow{grid-template-columns:minmax(65px,90px) minmax(0,1fr) minmax(60px,75px);gap:6px}
+  .modalback{padding:10px;align-items:flex-start;overflow:auto}
+  .modal{max-width:100%;margin:auto;padding:16px}
+}
+@media(max-width:400px){
+  .main{padding:9px}
+  .card{padding:11px}
+  .stats{grid-template-columns:minmax(0,1fr)}
+  .top h1{font-size:21px}
+  .nav button{font-size:12px;padding:8px}
+}
+
 </style>
 </head>
 <body>

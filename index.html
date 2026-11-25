@@ -52,9 +52,14 @@
   h1,h2,h3,p,.sub{overflow-wrap:anywhere}
   input,select,textarea{max-width:100%;min-width:0}
   button{min-height:42px;white-space:normal}
-  .responsive{overflow-x:auto!important;overflow-y:hidden!important;max-width:100%;-webkit-overflow-scrolling:touch}
-  .responsive table{min-width:520px}
-  #chargesShare .responsive table{min-width:430px}
+  /* Les cartes restent dans l'axe : seul le contenu des tableaux peut glisser horizontalement */
+  .responsive{display:block;width:100%;max-width:100%;overflow-x:auto!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:pan-x pan-y;scrollbar-width:thin;scrollbar-color:#9aa8b3 #eef2f5}
+  .responsive table{width:max-content;min-width:600px;max-width:none}
+  #chargesShare .responsive table{min-width:440px}
+  #chargesShare .responsive input{width:100%;min-width:90px}
+  .responsive::-webkit-scrollbar{height:6px}
+  .responsive::-webkit-scrollbar-track{background:#eef2f5;border-radius:8px}
+  .responsive::-webkit-scrollbar-thumb{background:#9aa8b3;border-radius:8px}
   #chargesShare .responsive input{width:100%;min-width:90px}
   #chargesShare .grid.two{grid-template-columns:minmax(0,1fr)}
   #chargesShare #shareBalanceResult{font-size:15px!important;line-height:1.5;overflow-wrap:anywhere}

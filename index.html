@@ -464,3 +464,53 @@ function shareEsc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<
 shareRender();
 </script><script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("service-worker.js").catch(()=>{}));}</script>
 </body></html>
+<style>
+/* Ergonomie mobile renforcée : transactions et dettes */
+@media(max-width:720px){
+  /* Transactions : priorité à la lecture et aux actions principales */
+  #transactions>.card{padding:10px!important}
+  #transactions .sectionhead{align-items:stretch!important;flex-wrap:wrap}
+  #transactions .sectionhead h2{width:100%;font-size:17px}
+  #transactions .sectionhead button{flex:1 1 100%;}
+  #transactions .formgrid{grid-template-columns:1fr!important}
+  #transactions .formgrid .field{margin:0!important}
+  #transactions #txFilterCount{font-size:12px;padding:5px 0}
+  #transactions> .card > div[style*="display:flex"] button{flex:1 1 100%;width:100%;}
+  #transactions #allTransactions tr:not(.txDaySeparator){
+    display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    gap:5px 8px!important;padding:10px!important;margin:0 0 9px!important;
+    border:1px solid #e4e9ed!important;border-radius:12px!important;background:#fff!important;
+  }
+  #transactions #allTransactions td{min-width:0!important;padding:3px 1px!important;line-height:1.35!important;overflow-wrap:anywhere!important}
+  #transactions #allTransactions td:nth-child(1),#transactions #allTransactions td:nth-child(2){display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;gap:5px}
+  #transactions #allTransactions td:nth-child(1):before{content:"Choisir";margin:0!important}
+  #transactions #allTransactions td:nth-child(2):before{content:"Vérifiée";margin:0!important}
+  #transactions #allTransactions td:nth-child(3),#transactions #allTransactions td:nth-child(5),#transactions #allTransactions td:nth-child(6),#transactions #allTransactions td:nth-child(8){grid-column:span 1!important}
+  #transactions #allTransactions td:nth-child(4){grid-column:1/-1!important;font-size:15px!important;font-weight:750!important;padding-top:5px!important}
+  #transactions #allTransactions td:nth-child(7){grid-column:1/-1!important}
+  #transactions #allTransactions td:nth-child(8){font-size:15px!important;font-weight:750!important;align-items:flex-start!important;text-align:left!important}
+  #transactions #allTransactions td:nth-child(9){grid-column:1/-1!important;display:flex!important;flex-direction:row!important;align-items:center!important;gap:7px!important;border-top:1px solid #edf0f2!important;padding-top:7px!important;margin-top:3px!important}
+  #transactions #allTransactions td:nth-child(9):before{content:"Actions";margin:0!important;width:auto!important}
+  #transactions #allTransactions td:nth-child(9) button{flex:1 1 auto!important;padding:8px!important;min-height:38px!important;font-size:12px!important}
+  #transactions #allTransactions td:nth-child(6) select{font-size:12px!important}
+  #transactions #allTransactions td:nth-child(7) input{font-size:13px!important}
+  #transactions #allTransactions td:before{font-size:10px!important;letter-spacing:.02em!important;color:#778390!important}
+  #transactions #allTransactions tr.txDaySeparator{padding:3px 0!important;margin:10px 0 5px!important}
+
+  /* Dettes : cartes moins hautes, boutons empilés et historique glissable dans son propre cadre */
+  #debts .grid.stats{gap:8px!important}
+  #debts .grid.stats .card{padding:12px!important}
+  #debts #debtList>.card{padding:12px!important;margin-bottom:8px!important}
+  #debts #debtList .sectionhead{gap:8px!important;align-items:center!important}
+  #debts #debtList .sectionhead h3{font-size:16px!important;overflow-wrap:anywhere}
+  #debts #debtList .statvalue{font-size:23px!important;margin:5px 0!important}
+  #debts #debtList>div>div[style*="display:flex"]{display:grid!important;grid-template-columns:1fr!important;gap:7px!important}
+  #debts #debtList button{width:100%;min-width:0;padding:9px 10px!important;font-size:13px!important}
+  #debts #debtList details{font-size:13px}
+  #debts #debtList details>div>div[style*="display:flex"]{display:grid!important;grid-template-columns:1fr!important;gap:7px!important}
+  #debts #debtList details label{display:block!important}
+  #debts #debtList details input[type=date],#debts #debtList details input[type=text]{width:100%!important;max-width:100%!important;margin-top:4px}
+  #debts #debtList details>div>div[style*="overflow-x:auto"]{max-width:100%;overflow-x:auto!important;-webkit-overflow-scrolling:touch}
+  #debts #debtList details table{min-width:520px!important}
+}
+</style>

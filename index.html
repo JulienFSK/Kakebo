@@ -303,7 +303,24 @@ let selectedTransactionIds=new Set();
 let txPage=0; const txPageSize=80;
 function toggleTransactionSelection(id,checked){if(checked)selectedTransactionIds.add(String(id));else selectedTransactionIds.delete(String(id));updateBulkDeleteButton();}
 function toggleReviewedTransaction(id,checked){let t=data.transactions.find(x=>String(x.id)===String(id));if(!t)return;t.reviewed=!!checked;save();}
-function toggleSelectVisibleTransactions(checked){if(typeof checked!=="boolean")checked=!Array.from(document.querySelectorAll(".txBulkCheck")).every(x=>x.checked);document.querySelectorAll(".txBulkCheck").forEach(x=>{x.checked=checked;if(checked)selectedTransactionIds.add(String(x.value));else selectedTransactionIds.delete(String(x.value));});updateBulkDeleteButton();}
+function getFilteredTransactionsForBulkSelection(){
+ const el=id=>document.getElementById(id);
+ const search=(el("txSearch")?.value||"").toLocaleLowerCase("fr").trim();
+ const account=[...(el("txAccount")?.selectedOptions||[])].map(o=>o.value);
+ const category=[...(el("txCategory")?.selectedOptions||[])].map(o=>o.value);
+ const type=[...(el("txType")?.selectedOptions||[])].map(o=>o.value);
+ const from=el("txFrom")?.value||"",to=el("txTo")?.value||"";
+ const minAmount=el("txMinAmount")?.value||"",maxAmount=el("txMaxAmount")?.value||"";
+ const objectFilter=[...(el("txObjectFilter")?.selectedOptions||[])].map(o=>o.value);
+ return data.transactions.filter(t=>(!search||(String(t.label||"").toLocaleLowerCase("fr").includes(search)||String(t.object||"").toLocaleLowerCase("fr").includes(search)))&&(!account.length||account.some(ac=>t.account===ac||(t.transfer&&t.transferTo===ac)))&&(!category.length||category.includes(t.category))&&(!type.length||type.some(v=>v==="transfer"?!!t.transfer:v==="debt"?(!t.transfer&&(!!t.linkedDebtId||t.category==="Mouvement de dette")):v==="savings"?(!t.transfer&&t.category.toLocaleLowerCase("fr").includes("épargne")):(!t.transfer&&(v==="income"?Number(t.amount)>=0:Number(t.amount)<0))))&&(!from||t.date>=from)&&(!to||t.date<=to)&&(minAmount===""||Math.abs(Number(t.amount))>=Number(minAmount))&&(maxAmount===""||Math.abs(Number(t.amount))<=Number(maxAmount))&&(!objectFilter.length||objectFilter.includes("__ALL__")||objectFilter.includes(String(t.object||"").trim()||"__missing__")));
+}
+function toggleSelectVisibleTransactions(checked){
+ const matching=getFilteredTransactionsForBulkSelection(),ids=matching.map(t=>String(t.id));
+ if(typeof checked!=="boolean")checked=!ids.length||!ids.every(id=>selectedTransactionIds.has(id));
+ if(checked)ids.forEach(id=>selectedTransactionIds.add(id));else ids.forEach(id=>selectedTransactionIds.delete(id));
+ document.querySelectorAll(".txBulkCheck").forEach(x=>x.checked=selectedTransactionIds.has(String(x.value)));
+ updateBulkDeleteButton();
+}
 function updateBulkDeleteButton(){let b=document.getElementById("bulkDeleteTxBtn");if(b){b.textContent=`Supprimer la sélection (${selectedTransactionIds.size})`;b.disabled=!selectedTransactionIds.size;}let e=document.getElementById("bulkEditTxBtn");if(e){e.textContent=`Modifier la sélection (${selectedTransactionIds.size})`;e.disabled=!selectedTransactionIds.size;}}
 function editSelectedTransactions(){
  const picked=[...selectedTransactionIds].map(id=>data.transactions.find(t=>String(t.id)===String(id))).filter(Boolean);

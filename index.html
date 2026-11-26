@@ -234,7 +234,15 @@ function applyLinkedDebtTx(t){if(!t||!t.linkedDebtId)return;let d=data.debts.fin
 function undoLinkedDebtTx(t){if(!t||!t.linkedDebtId)return;let d=data.debts.find(x=>x.id===Number(t.linkedDebtId));if(!d)return;d.history=d.history||[];let h=d.history.find(x=>x.linkedTxId===t.id);if(h){d.remaining=Number(d.remaining||0)-Number(h.amount||0);d.history=d.history.filter(x=>x.linkedTxId!==t.id);}}
 let cloudApp=null,cloudAuth=null,cloudDb=null,cloudUser=null,cloudUnsub=null,cloudApplying=false;
 function cloudStatus(msg){let el=document.getElementById('cloudStatus');if(el)el.textContent=msg}
-function save(){localStorage.setItem('kakebo-data',JSON.stringify(data));render();cloudScheduleSync()}
+function recalculateAccountBalancesFromTransactions(){
+ const totals=new Map(data.accounts.map(a=>[a.name,0]));
+ for(const t of data.transactions||[]){
+  if(t.transfer){const v=Math.abs(Number(t.amount)||0);if(totals.has(t.account))totals.set(t.account,totals.get(t.account)-v);if(totals.has(t.transferTo))totals.set(t.transferTo,totals.get(t.transferTo)+v);}
+  else if(totals.has(t.account))totals.set(t.account,totals.get(t.account)+(Number(t.amount)||0));
+ }
+ data.accounts.forEach(a=>{a.balance=Number((totals.get(a.name)||0).toFixed(2));});
+}
+function save(){recalculateAccountBalancesFromTransactions();localStorage.setItem('kakebo-data',JSON.stringify(data));render();cloudScheduleSync()}
 let cloudSyncTimer=null,cloudSnapshotFirst=true,cloudRemoteApply=false;
 function cloudDoc(){return cloudDb.collection('users').doc(cloudUser.uid).collection('kakebo').doc('main')}
 function cloudScheduleSync(){if(!cloudUser||!cloudDb||cloudRemoteApply)return;clearTimeout(cloudSyncTimer);cloudStatus('Modification enregistrée localement · synchronisation en attente…');cloudSyncTimer=setTimeout(cloudSyncNow,700)}

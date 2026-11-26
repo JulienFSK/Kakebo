@@ -337,7 +337,7 @@ function toggleTxPointage(){txPointageMode=!txPointageMode;document.getElementBy
 let selectedTransactionIds=new Set();
 let txPage=0; const txPageSize=80;
 function toggleTransactionSelection(id,checked){if(checked)selectedTransactionIds.add(String(id));else selectedTransactionIds.delete(String(id));updateBulkDeleteButton();}
-function toggleReviewedTransaction(id,checked){let t=data.transactions.find(x=>String(x.id)===String(id));if(!t)return;trackUndo('Pointage d’une transaction');t.reviewed=!!checked;localStorage.setItem('kakebo-data',JSON.stringify(data));undoBaseline=JSON.stringify(data);cloudScheduleSync();updateUndoButton();}
+function toggleReviewedTransaction(id,checked){let t=data.transactions.find(x=>String(x.id)===String(id));if(!t)return;trackUndo('Pointage d’une transaction');t.reviewed=!!checked;document.querySelectorAll('#allTransactions .txReviewedCheck').forEach(c=>{if(c.getAttribute('onchange').startsWith('toggleReviewedTransaction('+t.id+',')){c.checked=t.reviewed;c.closest('tr').classList.toggle('txReviewedRow',t.reviewed)}});localStorage.setItem('kakebo-data',JSON.stringify(data));undoBaseline=JSON.stringify(data);cloudScheduleSync();updateUndoButton();}
 function getFilteredTransactionsForBulkSelection(){
  const el=id=>document.getElementById(id);
  const search=(el("txSearch")?.value||"").toLocaleLowerCase("fr").trim();
